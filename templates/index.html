@@ -1,17 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Forest Fire Detection</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
 <div class="container">
-    <h1>🌲 Forest Fire Detection</h1>
-    <p class="subtitle">Image-Based Forest Fire Detection System</p>
+
+    <h1>🌲 Forest Fire Detection System</h1>
+    <p class="subtitle">
+        Comparative Analysis using Machine Learning (SVM) and Deep Learning (CNN)
+    </p>
 
     <!-- Upload Form -->
     <form method="POST" enctype="multipart/form-data">
+
+        <!-- Model Selection -->
+        <div class="model-select">
+            <label for="model_type">Select Detection Model</label>
+            <select name="model_type" id="model_type" required>
+                <option value="" disabled selected>Choose a model</option>
+                <option value="svm">SVM (HOG + Classical ML)</option>
+                <option value="cnn">CNN (Deep Learning)</option>
+            </select>
+        </div>
+
+        <!-- Image Upload -->
         <label class="upload-box">
             <input type="file" name="image" accept="image/*" required onchange="previewImage(event)">
             <span>📷 Upload Forest Image</span>
@@ -24,11 +40,15 @@
     </form>
 
     {% if result %}
-    <!-- Result Card -->
+    <!-- Result Section -->
     <div class="result-card {{ 'fire' if result=='Fire Detected' else 'safe' }}">
         <h2>{{ result }}</h2>
+        <p class="model-used">
+            Model Used:
+            <strong>{{ 'CNN (Deep Learning)' if selected_model=='cnn' else 'SVM (Machine Learning)' }}</strong>
+        </p>
 
-        <!-- Confidence Bar -->
+        <!-- Confidence -->
         <div class="confidence">
             <span>Confidence: {{ confidence }}%</span>
             <div class="bar">
@@ -39,13 +59,8 @@
         <!-- Safety Message -->
         <p class="safety">{{ safety_msg }}</p>
     </div>
-
-    <!-- History Panel -->
-    <div class="history">
-        <h3>🕒 Recent Checks</h3>
-        <ul id="historyList"></ul>
-    </div>
     {% endif %}
+
 </div>
 
 <script>
@@ -54,27 +69,8 @@ function previewImage(event) {
     img.src = URL.createObjectURL(event.target.files[0]);
     img.style.display = "block";
 }
-
-// Save history in browser
-window.onload = function () {
-    {% if result %}
-        let history = JSON.parse(localStorage.getItem("history")) || [];
-        history.unshift("{{ result }} - {{ confidence }}%");
-        history = history.slice(0,5);
-        localStorage.setItem("history", JSON.stringify(history));
-    {% endif %}
-
-    let list = document.getElementById("historyList");
-    if(list){
-        let history = JSON.parse(localStorage.getItem("history")) || [];
-        history.forEach(item => {
-            let li = document.createElement("li");
-            li.textContent = item;
-            list.appendChild(li);
-        });
-    }
-}
 </script>
+
 
 </body>
 </html>
