@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Forest Fire Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+<div class="container">
+    <h1>🌲 Forest Fire Detection</h1>
+    <p class="subtitle">Image-Based Forest Fire Detection System</p>
+
+    <!-- Upload Form -->
+    <form method="POST" enctype="multipart/form-data">
+        <label class="upload-box">
+            <input type="file" name="image" accept="image/*" required onchange="previewImage(event)">
+            <span>📷 Upload Forest Image</span>
+        </label>
+
+        <!-- Image Preview -->
+        <img id="preview" class="preview-img"/>
+
+        <button type="submit">Analyze Image</button>
+    </form>
+
+    {% if result %}
+    <!-- Result Card -->
+    <div class="result-card {{ 'fire' if result=='Fire Detected' else 'safe' }}">
+        <h2>{{ result }}</h2>
+
+        <!-- Confidence Bar -->
+        <div class="confidence">
+            <span>Confidence: {{ confidence }}%</span>
+            <div class="bar">
+                <div class="fill" style="width: {{ confidence }}%"></div>
+            </div>
+        </div>
+
+        <!-- Safety Message -->
+        <p class="safety">{{ safety_msg }}</p>
+    </div>
+
+    <!-- History Panel -->
+    <div class="history">
+        <h3>🕒 Recent Checks</h3>
+        <ul id="historyList"></ul>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+function previewImage(event) {
+    const img = document.getElementById("preview");
+    img.src = URL.createObjectURL(event.target.files[0]);
+    img.style.display = "block";
+}
+
+// Save history in browser
+window.onload = function () {
+    {% if result %}
+        let history = JSON.parse(localStorage.getItem("history")) || [];
+        history.unshift("{{ result }} - {{ confidence }}%");
+        history = history.slice(0,5);
+        localStorage.setItem("history", JSON.stringify(history));
+    {% endif %}
+
+    let list = document.getElementById("historyList");
+    if(list){
+        let history = JSON.parse(localStorage.getItem("history")) || [];
+        history.forEach(item => {
+            let li = document.createElement("li");
+            li.textContent = item;
+            list.appendChild(li);
+        });
+    }
+}
+</script>
+
+</body>
+</html>
