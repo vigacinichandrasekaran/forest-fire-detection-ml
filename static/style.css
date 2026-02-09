@@ -1,3 +1,4 @@
+/* ================= Global ================= */
 body {
     font-family: "Segoe UI", sans-serif;
     background: linear-gradient(to bottom, #eef7f0, #cfe9d8);
@@ -25,7 +26,7 @@ h1 {
     margin-bottom: 20px;
 }
 
-/* Model Selector */
+/* ================= Model Selector ================= */
 .model-select {
     text-align: left;
     margin-bottom: 15px;
@@ -45,7 +46,7 @@ h1 {
     border: 1px solid #ccc;
 }
 
-/* Upload Box */
+/* ================= Upload ================= */
 .upload-box {
     display: block;
     border: 2px dashed #4caf50;
@@ -61,7 +62,7 @@ h1 {
     display: none;
 }
 
-/* Preview Image */
+/* ================= Preview ================= */
 .preview-img {
     width: 100%;
     margin: 10px 0;
@@ -69,7 +70,7 @@ h1 {
     display: none;
 }
 
-/* Button */
+/* ================= Button ================= */
 button {
     background: #2e7d32;
     color: white;
@@ -84,7 +85,7 @@ button:hover {
     background: #256628;
 }
 
-/* Result Card */
+/* ================= Result Card ================= */
 .result-card {
     margin-top: 20px;
     padding: 18px;
@@ -106,7 +107,7 @@ button:hover {
     margin-bottom: 8px;
 }
 
-/* Confidence Bar */
+/* ================= Confidence Bar ================= */
 .confidence {
     margin-top: 10px;
 }
@@ -123,8 +124,32 @@ button:hover {
     background: #4caf50;
 }
 
-/* Safety Message */
+/* ================= Safety ================= */
 .safety {
     margin-top: 12px;
     font-weight: bold;
+}
+
+/* ================= Comparison Table ================= */
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+.comparison-table th,
+.comparison-table td {
+    border: 1px solid #c8e6c9;
+    padding: 8px;
+    text-align: center;
+}
+
+.comparison-table th {
+    background: #2e7d32;
+    color: white;
+}
+
+.comparison-table tr:nth-child(even) {
+    background: #f1f8f4;
 }

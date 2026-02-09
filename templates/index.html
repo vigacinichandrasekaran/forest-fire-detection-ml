@@ -14,16 +14,17 @@
         Comparative Analysis using Machine Learning (SVM) and Deep Learning (CNN)
     </p>
 
-    <!-- Upload Form -->
+    <!-- ================= Upload Form ================= -->
     <form method="POST" enctype="multipart/form-data">
 
         <!-- Model Selection -->
         <div class="model-select">
-            <label for="model_type">Select Detection Model</label>
+            <label for="model_type">Select Mode</label>
             <select name="model_type" id="model_type" required>
-                <option value="" disabled selected>Choose a model</option>
-                <option value="svm">SVM (HOG + Classical ML)</option>
-                <option value="cnn">CNN (Deep Learning)</option>
+                <option value="" disabled selected>Choose mode</option>
+                <option value="svm">SVM Only</option>
+                <option value="cnn">CNN Only</option>
+                <option value="compare">Compare SVM & CNN</option>
             </select>
         </div>
 
@@ -33,22 +34,25 @@
             <span>📷 Upload Forest Image</span>
         </label>
 
-        <!-- Image Preview -->
+        <!-- Preview -->
         <img id="preview" class="preview-img"/>
 
         <button type="submit">Analyze Image</button>
     </form>
 
+    <!-- ================= Single Model Result ================= -->
     {% if result %}
-    <!-- Result Section -->
     <div class="result-card {{ 'fire' if result=='Fire Detected' else 'safe' }}">
         <h2>{{ result }}</h2>
+
         <p class="model-used">
             Model Used:
-            <strong>{{ 'CNN (Deep Learning)' if selected_model=='cnn' else 'SVM (Machine Learning)' }}</strong>
+            <strong>
+                {{ 'CNN (Deep Learning)' if selected_model=='cnn'
+                   else 'SVM (Machine Learning)' }}
+            </strong>
         </p>
 
-        <!-- Confidence -->
         <div class="confidence">
             <span>Confidence: {{ confidence }}%</span>
             <div class="bar">
@@ -56,8 +60,43 @@
             </div>
         </div>
 
-        <!-- Safety Message -->
         <p class="safety">{{ safety_msg }}</p>
+    </div>
+    {% endif %}
+
+    <!-- ================= Dynamic Comparison ================= -->
+    {% if comparison %}
+    <div class="result-card safe">
+
+        <h2>📊 Dynamic Model Comparison</h2>
+
+        <table class="comparison-table">
+            <tr>
+                <th>Metric</th>
+                <th>SVM</th>
+                <th>CNN</th>
+            </tr>
+            <tr>
+                <td>Prediction</td>
+                <td>{{ svm_result }}</td>
+                <td>{{ cnn_result }}</td>
+            </tr>
+            <tr>
+                <td>Confidence</td>
+                <td>{{ svm_confidence }}%</td>
+                <td>{{ cnn_confidence }}%</td>
+            </tr>
+            <tr>
+                <td>Threshold</td>
+                <td>—</td>
+                <td>{{ threshold }}</td>
+            </tr>
+        </table>
+
+        <p class="safety">
+            Same uploaded image evaluated by both models for real-time comparison.
+        </p>
+
     </div>
     {% endif %}
 
@@ -70,7 +109,6 @@ function previewImage(event) {
     img.style.display = "block";
 }
 </script>
-
 
 </body>
 </html>
