@@ -1,4 +1,4 @@
-# 🌲 Forest Fire Detection System
+# Forest Fire Detection System
 
 A web-based forest fire detection app that lets you upload a forest image and get an instant fire/no-fire prediction — with confidence scores — using your choice of two ML models.
 
